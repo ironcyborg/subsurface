@@ -1335,6 +1335,7 @@ static void plot_string(const struct dive *d, const struct plot_info *pi, int id
 	double depthvalue, tempvalue, speedvalue, sacvalue;
 	int decimals, cyl;
 	const char *unit;
+	char *time_string;
 	const struct plot_data *entry = pi->entry + idx;
 
 	depthvalue = get_depth_units(entry->depth, NULL, &depth_unit);
@@ -1479,6 +1480,9 @@ static void plot_string(const struct dive *d, const struct plot_info *pi, int id
 		depthvalue = get_depth_units(entry->running_sum / entry->sec, NULL, &depth_unit);
 		put_format_loc(b, translate("gettextFromC", "mean depth to here %.1f%s\n"), depthvalue, depth_unit);
 	}
+	time_string = format_datetime(d->when + entry->sec);
+	put_format(b, "%s\n", time_string);
+	free(time_string);
 
 	strip_mb(b);
 }
